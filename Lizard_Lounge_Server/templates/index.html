@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ESP32 Sensor Data</title>
+<meta charset="UTF-8">
+
+</head>
+<body>
+
+<h1> Sensor Data </h1>
+<p>Temperature 1: <span id="temp1">Loading...</span> °C</p>
+<p>Humidity 1: <span id="hum1">Loading...</span> %</p>
+<p>Temperature 2: <span id="temp2">Loading...</span> °C</p>
+<p>Humidity 2: <span id="hum2">Loading...</span> %</p>
+<p>UV Index: <span id="UV">Loading...</span></p>
+<p>Water Level: <span id="water">Loading...</span> %</p>
+
+<h1> Fan Button </h1>
+<button id='fanBtn' onclick='toggleDevice("fan")'>Turn ON</button>
+
+<h1> Pump Button </h1>
+<button id='pumpBtn' onclick='toggleDevice("pump")'>Turn ON</button>
+
+<h1> Relay 1 Button </h1>
+<button id='relay1Btn' onclick='toggleDevice("relay1")'>Turn ON</button>
+
+<h1> Relay 2 Button </h1>
+<button id='relay2Btn' onclick='toggleDevice("relay2")'>Turn ON</button>
+
+<h1> Relay 3 Button </h1>
+<button id='relay3Btn' onclick='toggleDevice("relay3")'>Turn ON</button>
+
+<h1> Feedback Demo </h1>
+<button id='feedbackBtn' onclick='toggleFeedback()'>Turn ON</button>
+
+<h1> Temperature Thresholds </h1>
+<form id="temp-threshold">
+    <label for="hot">Highest Temperature</label>
+    <input type="number" id="hot" name="hot" 
+   step = "0.1" placeholder="Enter Decimal Value" required>
+    <br><br>
+    <p> Current: <span id="hot-temp"></span> °C</p> </p>
+    <label for="cool">Lowest Temperature</label>
+    <input type="number" id="cold" name="cold" 
+    step = "0.1" placeholder="Enter Decimal Value" required>
+    <br><br>
+    <p> Current: <span id="low-temp"></span> °C</p> </p>
+    <button type="submit">Save Thresholds</button>
+
+</form>
+
+<h1> Humidity Threshold </h1>
+<form id="humid-threshold">
+    <label for="high-humidity">Highest Humidity</label>
+    <input type="number" id="hi-humidity" name="hi-humidity" 
+    step = "1" placeholder="Enter Percentage Value" required>
+    <br><br>
+    <p> Current: <span id="hi-humid"></span> %</p> </p>
+
+    <label for="humidity">Lowest Humidity</label>
+    <input type="number" id="low-humidity" name="low-humidity" 
+    step = "1" placeholder="Enter Percentage Value" required>
+    <br><br>
+    <p> Current: <span id="lo-humid"></span> %</p> </p>
+
+<button type="submit">Save Thresholds</button>
+</form>
+</body>
+<script>
+
+    // List of devices 
+    const devices = ["fan", "pump", "relay1", "relay2", "relay3"];
+    
+    // Toggle a device
+    function toggleDevice(device) {
+        let btn = document.getElementById(device + 'Btn');
+        let new_state = (btn.innerText == 'Turn ON') ? 'on':'off';
+        console.log(`Toggling ${device} to ${new_state}`); 
+    
+        fetch(`toggle_device?device=${device}&state=${new_state}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(`${device} state updated to: `, data[device]);
+            btn.innerText = (data[device] === 'on')? 'Turn OFF':'Turn ON';
+        })
+        .catch(error => console.error(`Error toggling ${device}:`, error));
+    }
+
+    // Toggle feedback button
+    function toggleFeedback() {
+        let btn = document.getElementById('feedbackBtn');
+        let new_state = (btn.innerText == 'Turn ON') ? 'on':'off';
+        console.log(`Toggling feedback to ${new_state}`); 
+    
+        fetch(`toggle_feedback?&state=${new_state}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(`Feedback state updated to: `, data.feedback);
+            btn.innerText = (data.feedback === 'on')? 'Turn OFF':'Turn ON';
+        })
+        .catch(error => console.error(`Error toggling feedback:`, error));
+    }
+    
+    // Function to fetch and update sensor data
+    function updateSensorData() {
+        fetch('/data')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Sensor data: ", data);
+            
+            let temps = data.temps;
+    
+            // Update temperature and humidity values
+            document.getElementById('temp1').innerText = temps.temp1;
+            document.getElementById('hum1').innerText = temps.hum1;
+            document.getElementById('temp2').innerText = temps.temp2;
+            document.getElementById('hum2').innerText = temps.hum2;
+            document.getElementById('UV').innerText = temps.UV;
+            document.getElementById('water').innerText = temps.water;
+    
+        })
+        .catch(error => console.error("Error fetching sensor data:", error));
+    }
+    
+    // Handle temperature threshold form submission
+    document.getElementById('temp-threshold').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent form from submitting normally
+    
+        // Get the input values
+        let hot_temp = parseFloat(document.getElementById('hot').value);
+        let low_temp = parseFloat(document.getElementById('cold').value);
+    
+        console.log(`Saving Thresholds: Hot Temp = ${hot_temp}, Low Temp = ${low_temp}`);
+    
+        // Send the data to the server (use your own server endpoint for saving thresholds)
+        fetch('/update_thresholds', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                hot_temp: hot_temp,
+                low_temp: low_temp
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Thresholds updated:", data);
+    
+            // Optionally update the UI with the new threshold values
+            document.getElementById('hot-temp').innerText = hot_temp;
+            document.getElementById('low-temp').innerText = low_temp;
+        })
+        .catch(error => console.error("Error updating thresholds:", error));
+    });
+    
+    // Handle humidity threshold form submission
+    document.getElementById('humid-threshold').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form from submitting normally
+    
+        // Get the input values
+        let hi_humid = parseFloat(document.getElementById('hi-humidity').value);
+        let lo_humid = parseFloat(document.getElementById('low-humidity').value);
+    
+        console.log(`Saving Humidity Thresholds: High Humidity = ${hi_humid}, Low Humidity = ${lo_humid}`);
+    
+        // Send the data to the server (use your own server endpoint for saving humidity thresholds)
+        fetch('/update_thresholds', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                hi_humid: hi_humid,
+                lo_humid: lo_humid
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Humidity thresholds updated:", data);
+    
+            // Optionally update the UI with the new humidity threshold values
+            document.getElementById('hi-humid').innerText = hi_humid;
+            document.getElementById('lo-humid').innerText = lo_humid;
+        })
+        .catch(error => console.error("Error updating humidity thresholds:", error));
+    });
+    
+    
+    // Periodically update sensor data every 5 seconds
+    setInterval(updateSensorData, 5000);
+    
+    </script>
+</html>
