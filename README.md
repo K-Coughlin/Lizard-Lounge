@@ -63,12 +63,9 @@ This issue is what our assisted automated vivarium helps alleviate.
 </code></pre>
       
 <!-- PROJECT TECHNOLOGIES -->
+## Software Technologies
 
-## Project Technologies
-
-### Software Technologies
-
-* Software Block Diagrams
+![Alt Text](images/Software_Block_Diagram.png)
 
 Built with:
 
@@ -84,15 +81,19 @@ The web application folder can be found under 'Lizard Lounge Web Server'. The ma
 
 The Arduino code for the ESP32 PCB can be found in the 'Lizard Lounge' folder as *Lizard_Lounge.ino* (Work in Progress).
 
-### Hardware Technologies
+## Hardware Technologies
 
-* Hardware Block Diagram
+![Alt Text](images/Hardware_Block_Diagram.png)
 
-#### PCB Design
+### PCB Design
 
-ESP32-S3 WROOM-1 Microprocessor
-* Picture 1
-* Picture 2
+Built with:
+* ![KiCad](https://img.shields.io/badge/-KiCad-0078D7?style=flat&logo=kicad)
+* ESP32-S3 WROOM-1 Microprocessor
+  
+<img src="images/PCB_KiCad.png" alt="PCB" width="500">
+
+![Alt Text](images/Finished_PCB.png)
 
 #### Sensors
 * 2 Temperature/humidity sensors
