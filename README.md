@@ -59,7 +59,8 @@ This issue is what our assisted automated vivarium helps alleviate.
   └── Lizard_Lounge      // Main Arduino folder <b>🛑 (Work In Progress) 🛑 </b>
       ├── Lizard_Lounge.ino
       ├── temphumidControl.ino
-      └── thingProperties.h
+      ├── UVWaterLvlControl.ino
+      └── Server.ino
 </code></pre>
       
 <!-- PROJECT TECHNOLOGIES -->
