@@ -1,131 +1,174 @@
-#include "thingProperties.h"
+/*
+.__  .__                         .___ .__                                      
+|  | |__|____________ _______  __| _/ |  |   ____  __ __  ____    ____   ____  
+|  | |  \___   /\__  \\_  __ \/ __ |  |  |  /  _ \|  |  \/    \  / ___\_/ __ \ 
+|  |_|  |/    /  / __ \|  | \/ /_/ |  |  |_(  <_> )  |  /   |  \/ /_/  >  ___/ 
+|____/__/_____ \(____  /__|  \____ |  |____/\____/|____/|___|  /\___  / \___  >
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ \/     \/           \/                         \//_____/      \/ 
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣢⣭⠓⣶⣶⣯⣽⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠿⠤⢯⣾⡿⢞⣫⣭⣍⢦⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢤⣦⣾⣯⣵⡾⢟⣫⣵⠾⠛⣉⣤⡌⣿⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣀⣤⣽⢰⣟⣵⠿⢛⣩⣤⣶⣿⣿⣿⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠼⢿⣿⣿⣾⣭⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣝⣛⡙⠛⠿⠻⣿⣿⣿⡿⣿⣿⡿⠛⠇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⣿⣿⢟⣠⣅⣀⣠⣴⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣶⣦⡈⠫⢍⣛⣿⣿⠿⠿⠿⠟⠋⠀⢀⣾⣿⣆⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣿⣿⣿⣿⣶⣄⡈⠉⠉⠁⢀⣀⣀⣀⣴⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣴⣾⣿⣿⣿⣿⣿⣿⢻⣿⣿⣿⣆⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣟⠉⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢈⣿⣿⣿⣿⡳⠦⢤⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣷⣦⣙⡻⢿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠁⣸⢯⡿⠿⣮⡻⣄⠀⠈
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⣿⠹⣿⢿⠙⣆⠙⠻⠿⠿⠛⠋⠉⠀⠀⠀⠀⣿⠘⡇⠀⠈⠳⡌⢣⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠏⠀⢹⡎⡇⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀⠐⠀⠀⠀⠰⠀⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠇⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+ASCII Art from asciiart.eu⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+*/
+
+
+// ============================= LIBRARIES ================================== //
+
 #include <Wire.h>
 #include <Adafruit_AHTX0.h>
-#include <Stepper.h>
 #include <elapsedMillis.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+#include <Wire.h>
 
-elapsedMillis taskTimer;
-unsigned int taskDelay;
+// ============================= VARIABLE SETUP ================================== //
 
-// ---------------------------== Set pins  ----------------------------- //
+// -- Peripherals -- //
+#define FAN_GPIO 4
+#define PUMP_GPIO 15
+#define RELAY1_GPIO 39
+#define RELAY2_GPIO 7
+#define RELAY3_GPIO 8
+#define EXTRA_GPIO 5
 
-const int motorGPIO = 8;
-const int pumpGPIO = 15;
-const int SDA_temp1 = 13;
-const int SCL_temp1 = 12;
-const int SDA_temp2 = 11;
-const int SCL_temp2 = 10;
+// -- Sensors -- //
 
-// --------------------------- Motor/Pump Control  --------------------------- //
-const int stepsPerRevolution = 32;                     // Steps per revolution for the motor
-Stepper myStepper(stepsPerRevolution, 39, 40, 41, 42); // Initialize stepper control (ORIGINAL: pins 27, 25, 26, 33, caused boot error)
-  
-// --------------------------- Sensor Control  --------------------------- //
-// Define the I2C buses
-TwoWire I2C_1 = TwoWire(0);  // Default I2C bus (GPIO 21, 22)
-TwoWire I2C_2 = TwoWire(1);  // Custom I2C bus (GPIO 18, 19)
+// Temperature & Humidity
+#define TEMP1_SCL 10
+#define TEMP1_SDA 11
+#define TEMP2_SCL 12
+#define TEMP2_SDA 13
+
+// -- WiFi Control -- //
+int wifiCheck = 0;
+
+// -- Thresholds --//
+float hot_temp_threshold = -1.0;
+float low_temp_threshold = -1.0;
+float hi_humid_threshold = -1.0;
+float lo_humid_threshold = -1.0;
+
+float temperature_hot = 0.0;
+int humidity_hot = 0.0;
+float temperature_cool = 0.0;
+int humidity_cool = 0.0;
+
+// Feedback toggle (for demo)
+bool feedback_toggle = false;
+
+// UV & Water level sensor variables
+float UV = 0.0;
+int water = 0;
+float uvSensorValue = 0.0;
+float UVindex = 0.0;
+float voltageUV = 0.0;
+
+// Define I2C busses
+TwoWire I2C_1 = TwoWire(0); 
+TwoWire I2C_2 = TwoWire(1); 
 
 // Create sensor instances
 Adafruit_AHTX0 aht1; // First AHT20 sensor
 Adafruit_AHTX0 aht2; // Second AHT20 sensor
 
+// UV
+#define uvVoltagePin 42
+#define uvInputPin 6
 
-// --------------------------- Wi-Fi Control  --------------------------- //
-bool start = false;
-void doThisOnConnect(){
-  Serial.println("Board successfully connected to Arduino IoT Cloud");
-  start = true;
-}
+// Ultrasonic (Water lvl sensor)
+#define trigPin 41
+#define echoPin 40
+
+// -- Timers -- //
+elapsedMillis taskTimer;
+unsigned int taskDelay;
+
+// ============================= DEVICE SETUP ================================== //
+
+// -- Structures -- //
+struct Device {
+  String name;
+  int pin;
+  int mode; // INPUT/OUTPUT
+  bool PMOS;   // On HIGH => LOW
+};
+
+Device fan = {"fan", FAN_GPIO, OUTPUT, true};
+Device pump = {"pump", PUMP_GPIO, OUTPUT, true};
+Device relay1 = {"relay1", RELAY1_GPIO, OUTPUT, false};
+Device relay2 = {"relay2", RELAY2_GPIO, OUTPUT, false};
+Device relay3 = {"relay3", RELAY3_GPIO, OUTPUT, false};
+Device extra = {"extra", EXTRA_GPIO, OUTPUT, false}; // This is PMOS, but we want it initialized as high
+Device trig = {"trig", trigPin, OUTPUT, false};
+Device echo = {"echo", echoPin, INPUT, false}; //INPUT
+
+Device devices[] = {fan, pump, relay1, relay2, relay3, extra, echo, trig};
+
+
 // ============================= SETUP ================================== //
 void setup() {
   Serial.begin(115200);   // Start serial communication
   // Wait for serial monitor to catch up
   delay(1500); 
 
-  // Defined in thingProperties.h
-  initProperties();
+  // Initialize all GPIO Pins
+  for (auto& device : devices) {
+    pinMode(device.pin, device.mode);
+    // If the pin is powered via PMOS, initialize it to HIGH rather than LOW to turn off
+    digitalWrite(device.pin, device.PMOS ? HIGH : LOW);
+  }
 
-  // Connect to Arduino IoT Cloud
-  ArduinoCloud.begin(ArduinoIoTPreferredConnection);
+  // Initialize I2Cs
+  I2C_1.begin(TEMP1_SDA,TEMP1_SCL);
+  aht1.begin(&I2C_1);
+  I2C_2.begin(TEMP2_SDA,TEMP2_SCL);
+  aht2.begin(&I2C_2);
 
-  ArduinoCloud.addCallback(ArduinoIoTCloudEvent::CONNECT, doThisOnConnect);
-  
-  // Debug messages for Wi-Fi
-  setDebugMessageLevel(2);
-  ArduinoCloud.printDebugInfo();
+  // DEBUG: Ask user via terminal if we want to connect to server (for easy code testing without server started)
+  Serial.println("Start with WiFi? 0. No, if debugging without server, 1. Yes, if debugging with server");
+  while (Serial.available() == 0) {
+  }
 
-  // --------------------------- MOSFET Setup  --------------------------- //
+  wifiCheck = Serial.parseInt();
 
-  // Set pin modes
-  pinMode(2, OUTPUT);
-  pinMode(motorGPIO, OUTPUT);     // PMOS for motor
-  pinMode(pumpGPIO, OUTPUT);    // PMOS for pump
-  digitalWrite(pumpGPIO, HIGH);  // Set pump off at first
-
-  // --------------------------- Sensor Setup  --------------------------- //
-
-  // Initialize the default I2C bus (GPIO 21 for SDA, GPIO 22 for SCL)
-  I2C_1.begin(SDA_temp1, SCL_temp1);    // SDA, SCL for the first sensor
-  aht1.begin(&I2C_1);     // Initialize first sensor on I2C_1 bus
-
-  // Initialize the second I2C bus (GPIO 18 for SDA, GPIO 19 for SCL)
-  I2C_2.begin(SDA_temp2, SCL_temp2);    // SDA, SCL for the second sensor
-  aht2.begin(&I2C_2);     // Initialize second sensor on I2C_2 bus
-
-  taskDelay = 1000;
-  taskTimer = 0;
+  if (wifiCheck){
+    connectToWiFi();
+  }
 }
 
+// ============================= LOOP ================================== //
 void loop() {
-  if (start != true) {
-    ArduinoCloud.update();
-    return;
-  }
-  unsigned long currentMillis = millis();
+  readSensors();
+  readWaterLevelSensor();
+  readUV();
 
-  if (taskTimer > taskDelay) {
-    taskTimer = 0;
-    tempLoop();
-  } 
-  ArduinoCloud.update();
-}
-
-void tempLoop() {
-  temphumidControl();
-}
-
-void onMotorPinChange()  {
-  // Add your code here to act upon MotorPin change
-  if (motorPin) {
-    digitalWrite(2, HIGH);
-    digitalWrite(motorGPIO, LOW);
-    Serial.println("Motor activated");
-    myStepper.setSpeed(700); // Set stepper motor speed
-
-    myStepper.step(2048/8);  // Move motor 45 degrees clockwise
-
-    delay(3000);             // Wait 3 seconds
-
-    myStepper.step(-2048/8); // Move motor 45 degrees counter-clockwise
-  }
-  else {
-    digitalWrite(2, LOW);
-    digitalWrite(motorGPIO, HIGH);
-    Serial.println("Motor deactivated");
+  if (wifiCheck){
+    sendSensorData(UV, water);
+    getThresholdData();
+    getFeedbackToggle();
+    if (feedback_toggle){
+      feedbackLoop();
+    } else {
+      getPeripheralData();
+    }
   }
 
-}
+  //feedbackLoop();
 
-void onWaterPumpChange()  {
-    if (waterPump) {
-    digitalWrite(2, HIGH);
-    digitalWrite(pumpGPIO, LOW);
-    Serial.println("Water Pump activated");
-  }
-  else {
-    digitalWrite(2, LOW);
-    digitalWrite(pumpGPIO, HIGH);
-    Serial.println("Water Pump deactivated");
-  }
+  delay(1000);
 }
 
