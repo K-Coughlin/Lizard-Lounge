@@ -108,19 +108,19 @@ _The IOT Relays are part of a project restriction that does not allow students t
 #### Feedback Control
 - [x] Peripherals react to current environment
   - i.e. When humidity too low, turn on pump. When humitiy too high, turn on fan.
-- [ ] Add feedback model to stabilize environment efficiently
+- [x] Add feedback model to stabilize environment efficiently
 
 #### Main Cage Setup
 - [x] Improve stability of vivarium
-- [ ] Clean up wiring
-- [ ] Ease of water replacement for water pump
+- [x] Clean up wiring
+- [x] Ease of water replacement for water pump
 
 #### Web Application
 - [x] Working server
 - [x] Changeable user thresholds for temperature and humidity
-- [ ] Collect & Store data over time
-- [ ] User alerts for when water level low, UV light low
-- [ ] Refined website & server
+- [x] Collect & Store data over time
+- [x] User alerts for when water level low, UV light low
+- [x] Refined website & server
 
 FINALIZED PROJECT DUE MAY 15th
 
