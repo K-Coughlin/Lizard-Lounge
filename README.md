@@ -52,14 +52,8 @@ This issue is what our assisted automated vivarium helps alleviate.
   Lizard-Lounge/
   ├── images/ 
   ├── README.md 
-  ├── Lizard_Lounge_Server
-  │   ├── templates
-  │   |   └── index.html // HTML/CSS Code File  <b> 🛑 (Work In Progress) 🛑 </b> 
-  │   └── app.py         // Main python structure for web application 🛑 (Work In Progress) 🛑 </b> 
-  └── Lizard_Lounge      // Main Arduino folder <b>🛑 (Work In Progress) 🛑 </b>
-      ├── Lizard_Lounge.ino
-      ├── temphumidControl.ino
-      └── thingProperties.h
+  ├── Lizard_Lounge_Server.zip // All server files zipped with virtual environment      
+  └── Lizard_Lounge      // Main Arduino folder
 </code></pre>
       
 <!-- PROJECT TECHNOLOGIES -->
